@@ -9,8 +9,8 @@ number_of_nodes = 7;
 shear = 0;
 gyro = 0;
 inertia = 0;
-rho = 1300;
-E = 70e7 ;
+rho = 7850;
+E = 190e9 ;
 Poisson = 0.29;
 
 % Parámetros del amb
@@ -20,12 +20,12 @@ Poisson = 0.29;
 nonlinear_decay = 0;
 taper = 0;
 L = 0.6;
-R_out = 0.2;
-R_in = 0.1;
+R_out = 0.02;
+R_in = 0;
 
 %bearings
 bearing_nodes = [number_of_nodes];
-bearing_stiff = 0;
+bearing_stiff = 40*10e6;
 bearing_amort = 0;
 
 % nodes_AMB = [1];
