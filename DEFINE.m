@@ -6,9 +6,9 @@ SPEED = 500; %en rpm
 
 %MATERIAL Y FENOMENOS EJE
 number_of_nodes = 7;
-shear = 0;
+shear = 1;
 gyro = 0;
-inertia = 0;
+inertia = 1;
 rho = 7850;
 E = 190e9 ;
 Poisson = 0.29;
@@ -24,7 +24,7 @@ R_out = 0.02;
 R_in = 0;
 
 %bearings
-bearing_nodes = [number_of_nodes];
+bearing_nodes = [1 number_of_nodes];
 bearing_stiff = 40*10e6;
 bearing_amort = 0;
 
@@ -47,7 +47,7 @@ bearing_amort = 0;
 
 %MODELO (saca plots automaticamente)
 [model,K,M,C    ] = get_matrixes(L,number_of_nodes,shear,gyro,inertia,R_out,R_in,rho,E,Poisson,SPEED,bearing_nodes,bearing_stiff,bearing_amort);
-
+model_graph(model,1,1,0)
 % mascaras para obtener posiciones
 mask_y = zeros(number_of_nodes*4, 1);
 mask_x = zeros(number_of_nodes*4, 1);
@@ -56,12 +56,23 @@ for i=1:4:number_of_nodes*4
     mask_y(i+1) = 1;
 end
 
-% Mascara de cómo se aplica la fuerza
+% Mascara de cómo se aplica la fuerza del AMB
 force_node = 1;
 force_mask_x =  zeros(number_of_nodes*4, 1);
 force_mask_x(force_node*4-3)  = 1;
 force_mask_y =  zeros(number_of_nodes*4, 1);
 force_mask_y(force_node*4-2) = 1;
+
+%Máscara de aplicación de perturbaciones
+perturbation_nodes = [1]
+Fmag = 50;
+perturbation_mask_x = zeros(number_of_nodes*4, 1);
+perturbation_mask_y = zeros(number_of_nodes*4, 1);
+for i=1:length(perturbation_nodes)
+    pert_node = perturbation_nodes(i);
+    perturbation_mask_x(pert_node*4-3) = 1;
+    perturbation_mask_y(pert_node*4-3) = 0;
+end
 
 % Ganancias que modelan el AMB
 w = 10.91;%*10e-3;
@@ -78,6 +89,9 @@ k_ = N^2*mu*Ag/4;
 Ky = 4*k_*Ib^2/g^3*(1+cos(alpha));
 Ki = 4*k_*Ib/g^2*(1+cos(alpha));
 
+%Gaqnancias del PD
+K_p = 3.78e5;
+K_d = 236;
 
 
 
