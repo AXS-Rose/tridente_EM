@@ -66,12 +66,14 @@ force_mask_y(force_node*4-2) = 1;
 %Máscara de aplicación de perturbaciones
 perturbation_nodes = [1]
 Fmag = 50;
+freq = 10;
+phase_x = pi/2; 
 perturbation_mask_x = zeros(number_of_nodes*4, 1);
 perturbation_mask_y = zeros(number_of_nodes*4, 1);
 for i=1:length(perturbation_nodes)
     pert_node = perturbation_nodes(i);
     perturbation_mask_x(pert_node*4-3) = 1;
-    perturbation_mask_y(pert_node*4-3) = 0;
+    perturbation_mask_y(pert_node*4-3) = 1;
 end
 
 % Ganancias que modelan el AMB
@@ -91,10 +93,6 @@ Ki = 4*k_*Ib/g^2*(1+cos(alpha));
 
 %Gaqnancias del PD
 K_p = 3.78e5;
-K_d = 236;
-
-
-
-
+K_d = 236
 
 
