@@ -7,7 +7,7 @@ SPEED = 500; %en rpm
 %MATERIAL Y FENOMENOS EJE
 number_of_nodes = 7;
 shear = 1;
-gyro = 0;
+gyro = 1;
 inertia = 1;
 rho = 7850;
 E = 190e9 ;
@@ -25,7 +25,7 @@ R_in = 0;
 
 %bearings
 bearing_nodes = [1 number_of_nodes];
-bearing_stiff = 40*10e6;
+bearing_stiff = 150*10e6; % valor encontrado en internet: 150*10e-6 no se si es confiable 
 bearing_amort = 0;
 
 % nodes_AMB = [1];
@@ -64,8 +64,10 @@ force_mask_y =  zeros(number_of_nodes*4, 1);
 force_mask_y(force_node*4-2) = 1;
 
 %Máscara de aplicación de perturbaciones
-perturbation_nodes = [1]
-Fmag = 50;
+perturbation_nodes = [3];
+Fmag = 100;
+xoffset = 100;
+yoffset = 100;
 freq = 10;
 phase_x = pi/2; 
 perturbation_mask_x = zeros(number_of_nodes*4, 1);
@@ -73,7 +75,7 @@ perturbation_mask_y = zeros(number_of_nodes*4, 1);
 for i=1:length(perturbation_nodes)
     pert_node = perturbation_nodes(i);
     perturbation_mask_x(pert_node*4-3) = 1;
-    perturbation_mask_y(pert_node*4-3) = 1;
+    perturbation_mask_y(pert_node*4-2) = 1;
 end
 
 % Ganancias que modelan el AMB
@@ -94,5 +96,3 @@ Ki = 4*k_*Ib/g^2*(1+cos(alpha));
 %Gaqnancias del PD
 K_p = 3.78e5;
 K_d = 236
-
-
